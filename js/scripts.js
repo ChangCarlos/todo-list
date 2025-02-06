@@ -5,6 +5,9 @@ const todoList = document.querySelector('#todo-list')
 const editForm = document.querySelector('#edit-form')
 const editInput = document.querySelector('#edit-input')
 const cancelEditBtn = document.querySelector('#cancel-edit-btn')
+const searchInput = document.querySelector('#search-input')
+const filterSelect = document.querySelector('#filter-select')
+const eraseBtn = document.querySelector('#erase-button')
 
 let oldInputValue;
 
@@ -124,3 +127,63 @@ editForm.addEventListener('submit', (e) => {
 
     toggleForms();
 });
+
+// evento para filtrar tarefas
+filterSelect.addEventListener('change', (e) => {
+    e.preventDefault();
+
+    const todos = document.querySelectorAll('.todo');
+
+    todos.forEach((todo) => {
+        switch(e.target.value) {
+            case 'all':
+                todo.style.display = 'flex';
+                break;
+            case 'done':
+                if(todo.classList.contains('done')) {
+                    todo.style.display = 'flex';
+                } else {
+                    todo.style.display = 'none';
+                }
+                break;
+            case 'todo':
+                if(!todo.classList.contains('done')) {
+                    todo.style.display = 'flex';
+                } else {
+                    todo.style.display = 'none';
+                }
+                break;
+        }
+    });
+});
+
+// evento para pesquisar tarefas
+searchInput.addEventListener('input', (e) => {
+    e.preventDefault();
+
+    const todos = document.querySelectorAll('.todo');
+
+    todos.forEach((todo) => {
+        const todoTitle = todo.querySelector('h3').innerText;
+        const searchValue = e.target.value.toLowerCase();
+
+        if(todoTitle.toLowerCase().includes(searchValue)) {
+            todo.style.display = 'flex';
+        } else {
+            todo.style.display = 'none';
+        }})
+});
+
+// evento para apagar a pesquisa
+eraseBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    searchInput.value = '';
+
+    const todos = document.querySelectorAll('.todo');
+
+    todos.forEach((todo) => {
+        todo.style.display = 'flex';
+    });
+});
+        
